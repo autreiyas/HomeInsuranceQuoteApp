@@ -4,13 +4,15 @@
 
 A Flask application that takes in customer requests containing customer home insurance request data and returns quote premiums. The Quote API supports both JSON format and URL-Encoded form data.
 
-**Screenshots:**
+## Requirements
 
-![screenshot 1](../screen1.png)
+## Screenshots
 
-![screenshot 2](../screen2.png)
+![screenshot 1](/screen1.png)
 
-# Example
+![screenshot 2](/screen2.png)
+
+## Example
 
 **Request**:
 
