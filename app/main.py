@@ -1,14 +1,23 @@
+# main project file. contains all functions and API/web routes for the application.
+# utilizes Numpy to interpolate coverage values.
+
+# ? notes: might switch to underscores instead of camelCase. Not 100% sure yet.
+
 from flask import Blueprint, jsonify, request, render_template, abort
-from . import factors
 import numpy
 
-main = Blueprint('main', __name__)
+from . import factors # import rate factors
 
-# customer request data class
-def FinalQuotedPremiumAmount(c):
-    finalQuotedPremiumAmount = factors.basePremium * InterpolateCoverage(c["DwellingCoverage"]) * GetHomeAge(c["HomeAge"]) * factors.RoofType[c["RoofType"]] * factors.NumUnits[c["NumberOfUnits"]]
 
-    return str(round(finalQuotedPremiumAmount if c["PartnerDiscount"].upper() != "Y" else finalQuotedPremiumAmount * .95))
+# Flask blueprint for init
+main = Blueprint("main", __name__)
+
+# calculate and return the final quoted premium amount.
+def GetFinalQuotedPremiumAmount(customer):
+    finalQuotedPremiumAmount = factors.basePremium * InterpolateCoverage(customer["DwellingCoverage"]) * GetHomeAge(customer["HomeAge"]) * factors.RoofType[customer["RoofType"]] * factors.NumUnits[customer["NumberOfUnits"]]
+
+    # check if partner discount is applied and return the final (rounded) quote in string format.
+    return str(round(finalQuotedPremiumAmount if customer["PartnerDiscount"].upper() != "Y" else finalQuotedPremiumAmount * .95))
 
 # leverages numpy to interpolate between dwelling coverage values.
 def InterpolateCoverage(dwellingCoverage):
@@ -39,12 +48,15 @@ def ValidateRequest(request):
         return False
     return True
 
-# quote API route
-@main.route('/quote', methods=["POST"])
+# Quote API / web results
+# Handles POST requests and returns the quoted monthly premium amount in JSON format or to the Flask template. 
+@main.route("/quote", methods=["POST"])
 def QuotePremium():
-    c = request.get_json()
-    if c is None :
-        c = {
+    customerRequest = request.get_json() # gets JSON data.
+
+    # for our Flask app HTML template form handling.
+    if customerRequest is None :
+        customerRequest = {
             "CustomerID": int(request.form["CustomerID"]),
             "DwellingCoverage": int(request.form["DwellingCoverage"]),
             "HomeAge": int(request.form["HomeAge"]),
@@ -52,14 +64,19 @@ def QuotePremium():
             "NumberOfUnits": int(request.form["NumberOfUnits"]),
             "PartnerDiscount": request.form["PartnerDiscount"]
         }
-        if not ValidateRequest(c):
+        # validate and return quoted amount to the HTML template.
+        if not ValidateRequest(customerRequest):
             abort(400)
-        return render_template('result.html', quote = FinalQuotedPremiumAmount(c))
-    if not ValidateRequest(c):
-        abort(400)
-    return {"result":FinalQuotedPremiumAmount(c)}
+        return render_template("result.html", quote = GetFinalQuotedPremiumAmount(customerRequest))
 
-#  web index
-@main.route('/', methods=["GET"])
-def index():
-    return render_template('form.html')
+    # validate and return quoted amount in JSON format.
+    if not ValidateRequest(customerRequest):
+        abort(400)
+    return {
+            "FinalQuotedPremiumAmount" : GetFinalQuotedPremiumAmount(customerRequest)
+        } 
+
+#  web index / customer input form
+@main.route("/", methods=["GET"])
+def Index():
+    return render_template("form.html")
