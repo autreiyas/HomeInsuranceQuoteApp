@@ -2,16 +2,21 @@
 
 # Copyright (C) 2022 Autreiyas <hello@autreiyas.com>
 
-# this starts a flask server in your vitrual environment. a ready source is required.
-# everything dies when the server is killed. do not use this to source/modify your virtual environment
-
+# this starts a flask server in a vitrual environment.
+# everything dies when the server is killed. do not use this to source/modify your virtual environment.
 # put this file inside the root folder of your flask project and run "./flaskup" from terminal.
 # if command does not work run "chmod u+x flaskup" and try again.
 
 # !!! UNTESTED IN PRODUCTION !!!
 
+if [ ! -d "./venv" ]; then
+	python3 -m venv venv
+	source ./venv/bin/activate
+	pip install -r requirements.txt
+else
+	source ./venv/bin/activate
+fi
 
-source ./venv/bin/activate
 export FLASK_ENV=development
 export FLASK_APP=app
 clear
