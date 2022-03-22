@@ -9,12 +9,9 @@ A Flask application that takes in requests containing customer home insurance da
 - Flask >= 2.0.2
 - NumPy
 
-
 ## How to run the application
 
-Build a docker image using the provided dockerfile or (easier) run the app inside a virtual environment using the provided "flaskup" script.
-
-
+Build a docker image using the provided dockerfile or run the app inside a virtual environment using the provided "flaskup" script.
 
 ## Screenshots
 
