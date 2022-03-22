@@ -1,0 +1,16 @@
+{% extends 'base.html' %} {% block main %}
+
+<div class="px-4 py-5 my-5 text-center">
+  <img class="d-block mx-auto mb-4" src={{ url_for('static',
+  filename='logo.png') }} width="72" height="57" />
+  <h1 class="display-5 fw-bold">Your Quoted Monthly Premium</h1>
+  <div class="col-lg-6 mx-auto">
+    <span
+      class="mb-4"
+      style="font-size: 180px; font-weight: 800; color: #0eba00"
+    >
+      ${{quote}}
+    </span>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %} {% block main %}
+<div class="px-4 py-5 my-5 text-center">
+  <img class="d-block mx-auto mb-4" src={{ url_for('static',
+  filename='logo.png') }} width="72" height="57" />
+  <h1 class="display-5 fw-bold">Get a quote</h1>
+  <div class="col-lg-6 mx-auto">
+    <p class="lead mb-4">Get a customized homeowners quote in seconds!</p>
+  </div>
+</div>
+<form
+  onsubmit="setDiscount();"
+  action="{{ url_for('main.QuotePremium') }}"
+  method="POST"
+>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-6 col-lg-3">
+        <label for="home age">Home Age</label>
+        <input
+          type="number"
+          class="form-control"
+          name="HomeAge"
+          value="1"
+          required
+        />
+        <small>In years</small>
+      </div>
+
+      <div class="col-sm-6 col-lg-3">
+        <label for="coverage">Coverage Amount</label>
+        <input
+          type="number"
+          class="form-control"
+          name="DwellingCoverage"
+          value="100000"
+          required
+        />
+      </div>
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Roof Type</label>
+          <select class="form-control" name="RoofType">
+            <option selected>Asphalt Shingles</option>
+            <option>Wood</option>
+            <option>Tin</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-3">
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Number of Units</label>
+          <select class="form-control" name="NumberOfUnits">
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group mx-auto mt-3">
+        <label class="mr-2" for="coverage">Apply Partner Discount</label>
+        <input
+          type="checkbox"
+          id="PartnerDiscountToggle"
+          name="PartnerDiscountToggle"
+        />
+      </div>
+    </div>
+    <input type="hidden" class="form-control" name="CustomerID" value="1" />
+    <input
+      type="hidden"
+      class="form-control"
+      id="PartnerDiscount"
+      name="PartnerDiscount"
+      value="N"
+    />
+    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+      <button type="submit" class="btn btn-success btn-lg px-4 mb-4">
+        GET QUOTE
+      </button>
+    </div>
+  </div>
+</form>
+
+<script>
+  function setDiscount() {
+    if (document.getElementById("PartnerDiscountToggle").checked) {
+      document.getElementById("PartnerDiscount").value = "Y";
+    }
+  }
+</script>
+{% endblock %}
