@@ -6,6 +6,8 @@ A Flask application that takes in customer requests containing customer home ins
 
 ## Requirements
 
+* Flask 2.0.2
+
 ## Screenshots
 
 ![screenshot 1](/screen1.png)
