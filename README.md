@@ -33,6 +33,6 @@ A Flask application that takes in customer requests containing customer home ins
 
 ```
 {
-    "result": "1393"
+    "FinalQuotedPremiumAmount": 1393
 }
 ```
