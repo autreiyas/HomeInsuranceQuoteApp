@@ -12,7 +12,7 @@ A Flask application that takes in requests containing customer home insurance da
 
 ## How to run the application
 
-Build a docker image using the provided dockerfile or run the flask server inside a virtual environment using the provided "flaskup" script.
+Build a docker image using the provided dockerfile or (easier) run the app inside a virtual environment using the provided "flaskup" script.
 
 
 
