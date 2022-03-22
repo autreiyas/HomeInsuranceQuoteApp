@@ -1,13 +1,20 @@
-# Online Home Insurance Quote App
+# Home Insurance Quote App
 
 ## Description
 
-A Flask application that takes in customer requests containing customer home insurance request data and returns quote premiums. The Quote API supports both JSON format and URL-Encoded form data.
+A Flask application that takes in requests containing customer home insurance data and returns quote premiums. The Quote API supports both JSON format and URL-Encoded form data.
 
 ## Requirements
 
 - Flask >= 2.0.2
 - NumPy
+
+
+## How to run the application
+
+Build a docker image using the provided dockerfile or run the flask server inside a virtual environment using the provided "flaskup" script.
+
+
 
 ## Screenshots
 
@@ -15,7 +22,7 @@ A Flask application that takes in customer requests containing customer home ins
 
 ![screenshot 2](/screen2.png)
 
-## Example
+## JSON Example
 
 **Request**:
 
