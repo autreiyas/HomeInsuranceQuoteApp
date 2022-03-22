@@ -4,7 +4,7 @@ def create_app():
 
     app = Flask(__name__)
 
-    # import main blueprint. blueprints are good for modularity.
+    # import main blueprint. good for modularity.
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 

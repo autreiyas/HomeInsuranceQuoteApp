@@ -3,7 +3,7 @@
 
 # ? notes: might switch to underscores instead of camelCase. Not 100% sure yet.
 
-from flask import Blueprint, jsonify, request, render_template, abort
+from flask import Blueprint, request, render_template, abort
 import numpy
 
 from . import factors # import rate factors
@@ -14,10 +14,10 @@ main = Blueprint("main", __name__)
 
 # calculate and return the final quoted premium amount.
 def GetFinalQuotedPremiumAmount(customer):
-    finalQuotedPremiumAmount = factors.basePremium * InterpolateCoverage(customer["DwellingCoverage"]) * GetHomeAge(customer["HomeAge"]) * factors.RoofType[customer["RoofType"]] * factors.NumUnits[customer["NumberOfUnits"]]
+    finalQuotedPremiumAmount = factors.basePremium * InterpolateCoverage(customer["DwellingCoverage"]) * GetHomeAge(customer["HomeAge"]) * factors.RoofType[customer["RoofType"]] * factors.NumberOfUnits[customer["NumberOfUnits"]]
 
     # check if partner discount is applied and return the final (rounded) quote in string format.
-    return str(round(finalQuotedPremiumAmount if customer["PartnerDiscount"].upper() != "Y" else finalQuotedPremiumAmount * .95))
+    return round(finalQuotedPremiumAmount if customer["PartnerDiscount"].upper() != "Y" else finalQuotedPremiumAmount * .95)
 
 # leverages numpy to interpolate between dwelling coverage values.
 def InterpolateCoverage(dwellingCoverage):
@@ -27,20 +27,18 @@ def InterpolateCoverage(dwellingCoverage):
 # calculate HomeAge factor.  
 def GetHomeAge(homeAge):
     for i in range(len(factors.HomeAge)):
-        if i == len(factors.HomeAge) - 1:
-            return factors.HomeAge[i][1]
-        if homeAge > factors.HomeAge[i][0] and homeAge < factors.HomeAge[i + 1][0]:
+        if homeAge > factors.HomeAge[i][0]:
             return factors.HomeAge[i][1]
 
 # validate request data.
 def ValidateRequest(request):
     if not str(request["CustomerID"]).isnumeric():
         return False
-    if not str(request["DwellingCoverage"]).isnumeric():
+    if not str(request["DwellingCoverage"]).isnumeric() and request["DwellingCoverage"] > 0:
         return False
-    if not str(request["HomeAge"]).isnumeric():
+    if not str(request["HomeAge"]).isnumeric() and request["HomeAge"] > 0:
         return False
-    if not str(request["NumberOfUnits"]).isnumeric():
+    if not str(request["NumberOfUnits"]).isnumeric() and request["NumberOfUnits"] > 0:
         return False
     if request["RoofType"] not in factors.RoofType:
         return False
@@ -67,7 +65,7 @@ def QuotePremium():
         # validate and return quoted amount to the HTML template.
         if not ValidateRequest(customerRequest):
             abort(400)
-        return render_template("result.html", quote = GetFinalQuotedPremiumAmount(customerRequest))
+        return render_template("result.html", quote = str(GetFinalQuotedPremiumAmount(customerRequest)))
 
     # validate and return quoted amount in JSON format.
     if not ValidateRequest(customerRequest):
@@ -79,4 +77,4 @@ def QuotePremium():
 #  web index / customer input form
 @main.route("/", methods=["GET"])
 def Index():
-    return render_template("form.html")
+    return render_template("form.html", roofTypes = factors.RoofType.keys(), units = factors.NumberOfUnits.keys())

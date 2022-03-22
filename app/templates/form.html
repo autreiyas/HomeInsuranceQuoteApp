@@ -41,9 +41,9 @@
         <div class="form-group">
           <label for="exampleFormControlSelect1">Roof Type</label>
           <select class="form-control" name="RoofType">
-            <option selected>Asphalt Shingles</option>
-            <option>Wood</option>
-            <option>Tin</option>
+            {% for type in roofTypes %}
+            <option>{{type}}</option>
+            {% endfor %}
           </select>
         </div>
       </div>
@@ -52,10 +52,9 @@
         <div class="form-group">
           <label for="exampleFormControlSelect1">Number of Units</label>
           <select class="form-control" name="NumberOfUnits">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
+            {% for num in units %}
+            <option>{{num}}</option>
+            {% endfor %}
           </select>
         </div>
       </div>
