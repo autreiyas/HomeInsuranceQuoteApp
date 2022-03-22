@@ -7,6 +7,7 @@ A Flask application that takes in customer requests containing customer home ins
 ## Requirements
 
 - Flask >= 2.0.2
+- NumPy
 
 ## Screenshots
 
